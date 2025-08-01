@@ -1,0 +1,76 @@
+# Filename: changelog.toml
+
+description = "Drafts a CHANGELOG.md entry by categorizing git commits between two tags."
+
+prompt = """
+# AI Agent Instructions: Release Notes & Changelog Drafter
+
+## Objective
+Your goal is to generate a formatted Markdown entry for a `CHANGELOG.md` file. You will do this by analyzing the git commit history between two specified git tags, categorizing the commits, and presenting them in a clean, readable format.
+
+**ARGUMENTS:** $ARGUMENTS (Should be in the format: `<from_tag> <to_tag>`. If empty, use the two most recent tags.)
+
+---
+
+### Phase 1: Determine Git Range
+
+1.  **Parse Arguments:** Check if `$ARGUMENTS` contains two tags.
+2.  **Identify Tags:**
+    * **If two tags are provided:** Use them as `<from_tag>` and `<to_tag>`.
+    * **If no tags are provided:** Automatically find the two most recent git tags. Execute `git tag -l --sort=-v:refname | head -n 2`. The first tag will be `<to_tag>` and the second will be `<from_tag>`.
+3.  **Validate Tags:** Ensure the tags exist. If not, stop and report an error.
+
+---
+
+### Phase 2: Fetch and Categorize Commits
+
+1.  **Get Commits:** Execute the following command to get all commit subjects between the two tags:
+    ```bash
+    git log --pretty=format:"%s" <from_tag>..<to_tag>
+    ```
+2.  **Initialize Categories:** Create lists for the following categories:
+    * `Features`
+    * `Fixes`
+    * `Documentation`
+    * `Miscellaneous` (for `refactor`, `perf`, `style`, `test`, `chore`, `build`, `ci`, etc.)
+3.  **Process Each Commit:**
+    * For each commit message, check its prefix.
+    * Remove the prefix and leading space (e.g., "feat: " becomes "").
+    * Capitalize the first letter of the remaining message.
+    * Add the cleaned-up message to the appropriate category list.
+        * `feat:` -> `Features`
+        * `fix:` -> `Fixes`
+        * `docs:` -> `Documentation`
+        * All others -> `Miscellaneous`
+
+---
+
+### Phase 3: Draft the Markdown Output
+
+1.  **Get Current Date:** Fetch today's date in `YYYY-MM-DD` format.
+2.  **Assemble the Entry:** Create a Markdown string using the categorized lists. Do not show categories that have no commits.
+
+    * **Header:** Start with `## [<to_tag>] - YYYY-MM-DD`.
+    * **Features Section:** If the `Features` list is not empty, add:
+        ```markdown
+        ### 🚀 New Features
+        * (List each item from the Features list here)
+        ```
+    * **Fixes Section:** If the `Fixes` list is not empty, add:
+        ```markdown
+        ### 🐛 Bug Fixes
+        * (List each item from the Fixes list here)
+        ```
+    * **Documentation Section:** If the `Documentation` list is not empty, add:
+        ```markdown
+        ### 📝 Documentation
+        * (List each item from the Documentation list here)
+        ```
+    * **Miscellaneous Section:** If the `Miscellaneous` list is not empty, add:
+        ```markdown
+        ### ⚙️ Miscellaneous
+        * (List each item from the Miscellaneous list here)
+        ```
+3.  **Print to Console:** Output the entire formatted Markdown block to the console for the user to copy.
+
+"""

@@ -1,0 +1,57 @@
+# Filename: clip.toml
+
+description = "Clips a web article, converts it to clean Markdown, and saves it locally."
+
+# This command requires an external tool like 'lynx' or a similar command-line browser
+# to be installed on the system to function correctly. The prompt assumes 'lynx' is available.
+prompt = """
+# AI Agent Instructions: Web Article to Markdown Clipper
+
+## Objective
+Your goal is to take a URL provided by the user, fetch the main content of the article at that URL, convert it into clean Markdown and summarize it, and save it to a local file for offline reading. Save both summarization and main content in the same file.
+
+**ARGUMENTS:** $ARGUMENTS (The URL of the article to clip)
+
+---
+
+### Phase 1: Input and Validation
+
+1.  **Get URL:** The URL is the first argument in `$ARGUMENTS`.
+2.  **Validate URL:**
+    * If `$ARGUMENTS` is empty, stop and ask: "Please provide a URL to clip."
+    * Check if the URL is in a valid format (starts with http/https). If not, report an error.
+
+---
+
+### Phase 2: Content Extraction and Conversion
+
+1.  **Fetch Web Page:** Use a command-line tool to dump the page's text content. `lynx` is a good choice for this as it excels at stripping out scripts and complex styling.
+    ```bash
+    # Use lynx to get a clean text representation of the webpage
+    lynx -dump -nolist "$URL"
+    ```
+2.  **Identify Article Title:**
+    * The first non-empty line from the `lynx` output is usually the page title. Extract this line.
+    * Sanitize the extracted title to create a valid filename. Replace spaces with underscores and remove characters that are invalid in filenames. The final filename should be `<sanitized_title>.md`.
+3.  **Extract and Clean Content:**
+    * This is a heuristic process. Your goal is to isolate the main article text, keep the summrization at top and whole content below it  and remove boilerplate like navigation links, ads, and footers.
+    * **Strategy:**
+        * Treat the extracted title as the H1 heading (`# <Title>`).
+        * Process the rest of the `lynx` output, assuming it's the body.
+        * Remove lines that are clearly navigation links (e.g., "Home", "About", "Contact Us").
+        * Remove common footer text (e.g., lines containing "Copyright ©", "All rights reserved").
+        * `lynx` often represents links with bracketed numbers (e.g., `[1]`, `[2]`). Remove these reference markers for a cleaner reading experience.
+
+4.  **Format as Markdown:**
+    * Ensure there is a single blank line between paragraphs to render them correctly in Markdown.
+    * Lines that are short and followed by a blank line can often be treated as subheadings (`##` or `###`).
+
+---
+
+### Phase 3: Save and Confirm
+
+1.  **Save File:** Write the cleaned-up Markdown content to the file named `<sanitized_title>.md` in the current directory.
+2.  **Confirmation:** Report the success to the user.
+    > "✅ Article clipped successfully and saved as `<sanitized_title>.md`"
+
+"""

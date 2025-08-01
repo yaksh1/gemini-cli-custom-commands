@@ -1,0 +1,53 @@
+# Filename: outdated_package.toml
+
+description = "Checks for outdated dependencies and fetches changelogs for major updates."
+
+prompt = """
+# AI Agent Instructions: Dependency Health Checker
+
+## Objective
+Your goal is to provide a clear and actionable report on outdated project dependencies. For minor updates, you'll simply list them. For major version updates, you will find and summarize the release notes or changelog to help the user assess the upgrade risk.
+
+---
+
+### Phase 1: Detect Environment and List Dependencies
+
+1.  **Detect Package Manager:** First, determine the project type by looking for a lock file. For this task, prioritize `package-lock.json` for `npm`.
+2.  **Get Outdated List:** Run the appropriate command to get a list of outdated packages in a machine-readable format.
+    * **For npm:**
+        ```bash
+        # Execute npm outdated and capture the JSON output
+        npm outdated --json
+        ```
+
+---
+
+### Phase 2: Analyze and Categorize Updates
+
+1.  **Parse the Output:** Read the JSON output from the previous step.
+2.  **Initialize Categories:** Create two lists: `Major Updates` and `Minor Updates`.
+3.  **Categorize Each Dependency:**
+    * For each package, compare the `current` version to the `latest` version.
+    * If the first number (the major version) is different (e.g., `1.x.x` -> `2.x.x`), add it to the `Major Updates` list.
+    * Otherwise, add it to the `Minor Updates` list.
+
+---
+
+### Phase 3: Generate the Health Report
+
+1.  **Print Header:** Start the report with a clear title.
+2.  **Process Major Updates:**
+    * For each item in the `Major Updates` list:
+        * Print the package name and version change (e.g., `**react: 17.0.2 -> 18.2.0**`).
+        * **Find the changelog:** Use `npm view <package-name> repository.url` to get its source code repository.
+        * **Fetch Release Notes:** Go to the repository URL and look for a "Releases" tab or a `CHANGELOG.md` file.
+        * **Summarize:** Read the release notes for the new major version. Provide a brief, bulleted summary focusing on:
+            * **Breaking Changes:** This is the most important information.
+            * **Key New Features:** What are the main benefits of upgrading?
+            * **Migration Steps:** Is there a codemod or upgrade guide available?
+        * Provide a direct link to the full changelog or release notes page.
+3.  **Process Minor Updates:**
+    * List all packages from the `Minor Updates` list in a simple, clean format (e.g., `* lodash: 4.17.20 -> 4.17.21`). These are generally safe to upgrade.
+4.  **Handle No Updates:** If all dependencies are up to date, print a confirmation message like "✅ All dependencies are up to date!"
+
+"""

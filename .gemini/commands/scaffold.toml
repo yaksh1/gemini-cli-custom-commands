@@ -1,0 +1,149 @@
+# Filename: scaffold.toml
+
+description = "scaffolds boilerplate files for various frameworks (React, Spring Boot, Flutter)."
+
+prompt = """
+# AI Agent Instructions: Automated Feature Branch Scaffolder
+
+## Objective
+Your goal is to generate all the necessary boilerplate files for a new component, service, or feature based on a specified framework/pattern (`<type>`) and a given `<name>`.
+
+**ARGUMENTS:** $ARGUMENTS (Should be in the format: `<type> <name>`, e.g., `react-component UserAvatar`)
+
+---
+
+### Phase 1: Input Validation and Setup
+
+1.  **Parse Arguments:** Split the `$ARGUMENTS` into two parts: the `<type>` and the `<name>`.
+2.  **Validate Input:** If two arguments are not provided, stop and display the correct usage:
+    > "Usage: `gemini -c scaffold <type> <name>`\nSupported types: `react-component`, `springboot-service`, `flutter-bloc`"
+3.  **Prepare Naming Conventions:**
+    * **PascalCase:** Convert the `<name>` to PascalCase (e.g., "user profile" becomes `UserProfile`). This will be used for class and component names.
+    * **kebab-case:** Convert the `<name>` to kebab-case (e.g., `UserProfile` becomes `user-profile`). This will be used for branch names.
+    * **snake_case:** Convert the `<name>` to snake_case (e.g., `UserProfile` becomes `user_profile`). This will be used for filenames in frameworks like Flutter.
+
+### Phase 2: Scaffold Boilerplate Files
+
+Execute the file creation steps based on the provided `<type>`.
+
+#### **Case 1: `react-component`**
+* **Action:** Create the following files inside a new directory `src/components/<PascalCaseName>/`.
+* **`src/components/<PascalCaseName>/<PascalCaseName>.jsx`**:
+    ```jsx
+    import React from 'react';
+    import './<PascalCaseName>.css';
+
+    const <PascalCaseName> = () => {
+      return (
+        <div className='<kebab-case-name>-wrapper'>
+          <h1><PascalCaseName> Component</h1>
+        </div>
+      );
+    };
+
+    export default <PascalCaseName>;
+    ```
+* **`src/components/<PascalCaseName>/<PascalCaseName>.css`**:
+    ```css
+    .<kebab-case-name>-wrapper {
+      padding: 1rem;
+      border: 1px solid #ccc;
+    }
+    ```
+* **`src/components/<PascalCaseName>/<PascalCaseName>.test.jsx`**:
+    ```jsx
+    import React from 'react';
+    import { render, screen } from '@testing-library/react';
+    import <PascalCaseName> from './<PascalCaseName>';
+
+    test('renders <PascalCaseName> component', () => {
+      render(<<PascalCaseName> />);
+      const element = screen.getByText(/<PascalCaseName> Component/i);
+      expect(element).toBeInTheDocument();
+    });
+    ```
+
+#### **Case 2: `springboot-service`**
+* **Action:** Create the following files inside `src/main/java/com/example/demo/<kebab-case-name>/`.
+* **`<PascalCaseName>.java`** (Entity):
+    ```java
+    package com.example.demo.<kebab-case-name>;
+    // import jakarta.persistence.*;
+
+    // @Entity
+    public class <PascalCaseName> {
+        // @Id
+        // @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+    }
+    ```
+* **`<PascalCaseName>Repository.java`**:
+    ```java
+    package com.example.demo.<kebab-case-name>;
+    // import org.springframework.data.jpa.repository.JpaRepository;
+
+    public interface <PascalCaseName>Repository /* extends JpaRepository<<PascalCaseName>, Long> */ {
+    }
+    ```
+* **`<PascalCaseName>Service.java`**:
+    ```java
+    package com.example.demo.<kebab-case-name>;
+    // import org.springframework.beans.factory.annotation.Autowired;
+    // import org.springframework.stereotype.Service;
+
+    // @Service
+    public class <PascalCaseName>Service {
+        // @Autowired
+        private <PascalCaseName>Repository <name>Repository;
+    }
+    ```
+* **`<PascalCaseName>Controller.java`**:
+    ```java
+    package com.example.demo.<kebab-case-name>;
+    // import org.springframework.web.bind.annotation.*;
+
+    // @RestController
+    // @RequestMapping("/api/<kebab-case-name>")
+    public class <PascalCaseName>Controller {
+    }
+    ```
+
+#### **Case 3: `flutter-bloc`**
+* **Action:** Create the following files inside `lib/features/<snake_case_name>_bloc/`.
+* **`lib/features/<snake_case_name>_bloc/<snake_case_name>_bloc.dart`**:
+    ```dart
+    import 'package:flutter_bloc/flutter_bloc.dart';
+    import '<snake_case_name>_event.dart';
+    import '<snake_case_name>_state.dart';
+
+    class <PascalCaseName>Bloc extends Bloc<<PascalCaseName>Event, <PascalCaseName>State> {
+      <PascalCaseName>Bloc() : super(<PascalCaseName>Initial()) {
+        on<<PascalCaseName>Event>((event, emit) {
+          // TODO: implement event handler
+        });
+      }
+    }
+    ```
+* **`lib/features/<snake_case_name>_bloc/<snake_case_name>_event.dart`**:
+    ```dart
+    abstract class <PascalCaseName>Event {}
+    ```
+* **`lib/features/<snake_case_name>_bloc/<snake_case_name>_state.dart`**:
+    ```dart
+    abstract class <PascalCaseName>State {}
+
+    class <PascalCaseName>Initial extends <PascalCaseName>State {}
+    ```
+
+#### **Default Case:**
+* **Action:** If `<type>` is not one of the above, report an error.
+    > "Error: Scaffolding for type '`<type>`' is not supported. Use one of the supported types."
+
+---
+
+### Phase 3: Finalization
+
+1.  **Report Success:** Inform the user that the setup is complete.
+2.  **List Created Files:** Provide a list of all the files that were successfully created.
+
+"""

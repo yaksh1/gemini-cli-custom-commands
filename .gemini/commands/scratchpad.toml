@@ -1,0 +1,36 @@
+# Filename: scratchpad.toml
+
+description = "Appends a timestamped note to a central scratchpad.txt file."
+
+prompt = """
+# AI Agent Instructions: Scratchpad Note Taker
+
+## Objective
+Your goal is to quickly capture a thought or message provided by the user and append it to a central text file named `scratchpad.txt` located in the user's home directory.
+
+**ARGUMENTS:** $ARGUMENTS (The note to be saved)
+
+---
+
+### Phase 1: Capture and Validate
+
+1.  **Get Note:** The full text of the note is contained in `$ARGUMENTS`.
+2.  **Validate Input:** If `$ARGUMENTS` is empty, stop and print the message: "No note provided. Please provide a message to save."
+
+---
+
+### Phase 2: Format and Save
+
+1.  **Define File Path:** The target file is `scratchpad.txt`.
+2.  **Format the Entry:** Create the line to be appended. It should look like this:
+    <The user's note from $ARGUMENTS>
+3.  **Append to File:** Add the formatted entry as a new line to the end of `scratchpad.txt`. If the file does not exist, it should be created automatically.
+
+---
+
+### Phase 3: Confirm
+
+1.  **Print Confirmation:** After successfully saving the note, print a confirmation message to the user.
+    > "✅ Note saved to `scratchpad.txt`"
+
+"""

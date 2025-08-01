@@ -1,0 +1,61 @@
+# Filename: eod.toml
+
+description = "Generates an End-of-Day summary from today's git commits and a todo.md file."
+
+prompt = """
+# AI Agent Instructions: End-of-Day Summary Drafter
+
+## Objective
+Your goal is to generate a concise End-of-Day (EOD) report suitable for a team update. You will gather information from the user's git commits made today and a local `todo.md` file.
+
+---
+
+### Phase 1: Information Gathering
+
+
+ DONT RUN GIT CONFIG USE DATA FROM BELOW
+1. git config user.name = yaksh1
+   git config user.email = yakshgandhi1@gmail.com
+
+2.  **Fetch Today's Git Commits:**
+    * Execute a git command to find all commits authored by the current user since midnight.
+    * The command should be: `git log --author="yaksh1" --since="00:00:00" --oneline`
+    * Store this list as the "Accomplishments."
+
+3.  **Find Completed Tasks:**
+    * Read the file `~/Documents/todo.md`.
+    * Find all lines that represent completed tasks (i.e., lines starting with `- [x]`).
+    * Clean up the text by removing the `- [x] ` prefix.
+    * Store this list as "Completed Tasks."
+
+---
+
+### Phase 2: Draft the EOD Report
+
+1.  **Assemble the Summary:** Create a Markdown-formatted string. Use the information gathered in Phase 1 and include placeholder sections for the user to complete.
+
+2.  **Format the Output:** The structure should be as follows:
+
+    **EOD Report - (Today's Date)**
+
+    ---
+
+    **✅ Accomplishments Today**
+    *(List the git commit messages here. If none, state "No new commits today.")*
+
+    **☑️ Other Completed Tasks**
+    *(List the completed tasks from todo.md here. If none, this section will be omitted.)*
+
+    **🤔 Blockers**
+    * *(Placeholder: User to fill this in)*
+
+    **🎯 Plan for Tomorrow**
+    * *(Placeholder: User to fill this in)*
+
+---
+
+### Phase 3: Final Output
+
+1.  **Print to Console:** Output the entire formatted report to the console. This allows the user to easily copy and paste it into Slack, an email, or another tool.
+
+"""

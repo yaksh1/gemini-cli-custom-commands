@@ -1,0 +1,102 @@
+# Filename: parallel_tasks.toml
+
+prompt = """
+
+# Parallel tasks execution
+
+ARGUMENTS: $ARGUMENTS
+
+# AI Agent Instructions: Parallel Feature Development using Git Worktrees
+
+## Objective
+
+Your goal is to set up multiple isolated Git worktree environments to execute a development task in parallel using sub-agents. Each agent will work on an identical copy of the codebase in its own sandboxed directory. After implementation, you will present the results for review and, upon approval, merge the chosen changes and clean up the environment.
+
+---
+
+### Phase 1: Environment Setup
+
+1.  **Analyze Arguments:** Review the user's request provided in `$ARGUMENTS` to determine the number of parallel agents required and the core task.
+
+2.  **Create Worktrees:**
+    * For each parallel agent, create a new Git worktree inside the `trees/` directory.
+    * Use the command: `git worktree add -b <branch-name> ./trees/<branch-name>`
+    * **Important:** Replace `<branch-name>` with a descriptive, lowercase name that reflects the task (e.g., `feature-auth-logic`, `refactor-api-service`).
+
+3.  **Install Dependencies:**
+    * For each newly created worktree, navigate into its specific directory using its absolute path.
+    * Run `npm install` within each worktree directory to set up its dependencies.
+
+---
+
+### Phase 2: Parallel Agent Execution
+
+1.  **Launch Sub-Agents:** Initiate a new sub-agent for each worktree you created.
+
+2.  **Assign Workspaces:**
+    * Agent 1 must operate **exclusively** within the `trees/<branch-name-1>/` directory.
+    * Agent 2 must operate **exclusively** within the `trees/<branch-name-2>/` directory.
+    * ...and so on for all agents.
+    * **CRITICAL CONSTRAINT:** All file modifications, creations, and deletions must occur only inside the agent's assigned `trees/<branch-name>` directory.
+
+3.  **Execute Task:**
+    * Each sub-agent will independently implement the engineering plan based on the `$ARGUMENTS`.
+    * **CONSTRAINT:** Agents must not run any scripts that start a server or client (e.g., `npm start`, `start.sh`). The focus is solely on code changes.
+
+4.  **Report Results:**
+    * Upon completing its task, each sub-agent must create a comprehensive report named `RESULTS.md` at the root of its workspace (e.g., `trees/<branch-name-1>/RESULTS.md`).
+    * This report should detail all changes made.
+
+---
+
+### Phase 3: Task Completion and Finalization
+
+1.  **Present for Review:** After all sub-agents have completed their work and generated their `RESULTS.md` files, present the results to the user.
+
+2.  **Request User Action:** Ask the user the following question for the worktree they wish to proceed with:
+    > "Do you want to commit the changes from `<branch-name>` or revise a change?"
+
+3.  **Execute Final Workflow (Upon User Approval):**
+    * If the user gives a positive confirmation to commit (e.g., "yes, commit," "proceed"), execute the following sequence of commands precisely, replacing `<branch-name>` with the name of the approved branch.
+
+    * **Step 3.1: Commit and Push Feature Branch**
+        ```bash
+        # Navigate to the correct worktree directory
+        cd trees/<branch-name>
+
+        # Stage and commit the changes
+        git add .
+        git commit -m 'feat: implement changes from branch <branch-name>'
+        git push origin <branch-name>
+        ```
+
+    * **Step 3.2: Merge into Main Branch**
+        ```bash
+        # Navigate back to the main project root
+        cd ../..
+
+        # Switch to the main branch
+        git checkout main
+
+        # Merge the feature branch
+        git merge <branch-name>
+
+        # Push the updated main branch
+        git push origin main
+        ```
+
+    * **Step 3.3: Clean Up Worktree and Branch**
+        ```bash
+        # Remove the worktree directory
+        git worktree remove ./trees/<branch-name>
+
+        # Delete the local feature branch
+        git branch -d <branch-name>
+        ```
+
+4.  **Stop:** After the cleanup is complete, the task is finished.
+
+
+"""
+
+description = "Sets up multiple git worktrees and launches parallel sub-agents for concurrent feature development and isolated testing."

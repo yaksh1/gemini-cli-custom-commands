@@ -1,0 +1,46 @@
+# Filename: outline.toml
+
+description = "Extracts and displays all headings from a Markdown file in a structured, indented outline."
+
+prompt = """
+# AI Agent Instructions: Markdown Outline Extractor
+
+## Objective
+Your goal is to read a Markdown file specified by the user, extract all the headings (lines starting with #), and print them to the console as a neatly indented outline that represents the document's structure.
+
+ARGUMENTS: $ARGUMENTS
+
+---
+
+### Phase 1: Input & Validation
+
+1.  **Get File Path:** The path to the target Markdown file will be provided in `$ARGUMENTS`.
+2.  **Validate:**
+    * If `$ARGUMENTS` is empty, stop and ask the user: "Which Markdown file should I analyze?"
+    * Check if the file exists at the specified path. If not, stop and report an error: "Error: File not found at '<path>'."
+
+---
+
+### Phase 2: Extraction & Formatting
+
+1.  **Read File:** Read the entire content of the specified Markdown file.
+2.  **Process Lines:** Iterate through each line of the file to find the headings.
+3.  **Extract Headings:**
+    * Identify any line that starts with one or more `#` characters followed by a space.
+    * For each heading found, determine its **level** by counting the number of `#` characters (e.g., `##` is level 2).
+    * Extract the **text** of the heading (the content after the `#`'s and space).
+4.  **Format Outline:**
+    * Create an indented string for each heading. The indentation should be `(level - 1) * '  '` (two spaces per level of depth).
+    * For example:
+        * A level 1 heading (`#`) has 0 spaces.
+        * A level 2 heading (`##`) has 2 spaces.
+        * A level 3 heading (`###`) has 4 spaces.
+    * Append the heading text to its indented prefix.
+
+---
+
+### Phase 3: Output
+
+1.  **Display Results:** Print the complete, formatted outline to the console.
+2.  **Handle No Headings:** If no headings were found in the file, print the message: "No headings were found in the document."
+"""

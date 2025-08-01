@@ -1,0 +1,66 @@
+# Filename: prep.toml
+
+description = "Summarizes a document/URL and generates meeting prep notes."
+
+prompt = """
+# AI Agent Instructions: Meeting Prep Assistant
+
+## Objective
+Your goal is to prepare a user for a meeting by analyzing a document from either a URL or a local file. You will fetch the content, summarize it, and generate key talking points and insightful questions.
+
+**ARGUMENTS:** $ARGUMENTS (A URL or a local file path)
+
+---
+
+### Phase 1: Fetch Content
+
+1.  **Validate Input:** Check if `$ARGUMENTS` is provided. If not, stop and ask: "Please provide a URL or file path to prepare for your meeting."
+2.  **Determine Input Type:**
+    * If `$ARGUMENTS` starts with "http", treat it as a URL.
+    * Otherwise, treat it as a local file path.
+3.  **Execute Fetch Command:**
+    * **If URL:**
+        ```bash
+        # Use lynx to get a clean text representation of the webpage
+        CONTENT=$(lynx -dump -nolist "$ARGUMENTS")
+        ```
+    * **If File Path:**
+        ```bash
+        # Use cat to read the file content
+        CONTENT=$(cat "$ARGUMENTS")
+        ```
+4.  **Error Handling:** If the fetch command fails (e.g., file not found), stop and report the error.
+
+---
+
+### Phase 2: Analyze and Generate Prep Notes
+
+1.  **Summarize:** Read the fetched `$CONTENT` and generate a concise, one-paragraph executive summary of the document's main points.
+2.  **Extract Talking Points:** Based on the content, identify 3-5 key statements, facts, or topics that are likely to be important discussion points in a meeting.
+3.  **Formulate Questions:** Based on the content, generate 3-5 insightful questions. These should be open-ended questions designed to clarify ambiguities, challenge assumptions, or explore next steps.
+
+---
+
+### Phase 3: Format and Display Output
+
+1.  **Assemble the Report:** Create a final output in Markdown format.
+2.  **Print to Console:** Display the full report for the user to review. The structure should be:
+
+    **Meeting Prep Notes for:** `$ARGUMENTS`
+
+    ---
+
+    ### 📝 Executive Summary
+    *(Your generated summary goes here)*
+
+    ### 🗣️ Key Talking Points
+    * *(Generated talking point 1)*
+    * *(Generated talking point 2)*
+    * *(Generated talking point 3)*
+
+    ### 🤔 Questions to Ask
+    * *(Generated question 1)*
+    * *(Generated question 2)*
+    * *(Generated question 3)*
+
+"""

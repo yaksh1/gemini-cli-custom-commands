@@ -1,0 +1,169 @@
+# Filename: create_readme.toml
+
+description = "Analyzes a project to generate a comprehensive, well-structured README.md file with detailed sections."
+
+prompt = """
+# AI Agent Instructions: Advanced README Drafter
+
+## Objective
+Your goal is to inspect a project directory, infer its structure and technology stack, and generate a comprehensive, draft `README.md` file that includes a wide range of standard sections from project structure to deployment.
+
+ARGUMENTS: $ARGUMENTS
+
+---
+
+### Phase 1: Project Analysis
+
+1.  **Identify Technology Stack:** Look for key dependency files (`package.json`, `pyproject.toml`, `pom.xml`, `go.mod`) to determine the primary language and package manager. Note if it's a monorepo with distinct `backend` and `frontend` folders.
+2.  **Analyze Directory Structure:** Scan the project layout to identify key folders like `src`, `api`, `components`, `lib`, `scripts`, `docs`, `tests`.
+3.  **Infer Project Purpose:** Analyze file and folder names to make an educated guess about the project's function (e.g., "REST API server," "React component library," "Data processing script").
+4.  **Find Configuration:** Look for a `.env.example` or `config.example.json` file.
+
+---
+
+### Phase 2: README Generation
+
+1.  **Create README.md:** Create a new file named `README.md` in the project root. Ask for permission to overwrite if one already exists.
+2.  **Draft Content Sections:** Populate the file with the following comprehensive structure. Use inferred information where possible and provide clear placeholders for the rest.
+
+    # [Project Title]
+
+    *A brief, one-sentence description of what this project does.*
+
+    ---
+
+    ## ✨ Features
+    * **Feature A:** (Placeholder: Describe the first key feature)
+    * **Feature B:** (Placeholder: Describe the second key feature)
+    * **Feature C:** (Placeholder: Describe the third key feature)
+
+    ## 📂 Project Structure
+    Here is the project's file structure:
+    \`\`\`
+    (Placeholder: Generate a simplified 'tree' of key directories)
+    .
+    ├── /src
+    │   ├── /api
+    │   └── /components
+    ├── /scripts
+    ├── .env.example
+    └── package.json
+    \`\`\`
+
+    ## ✅ Prerequisites
+    Before you begin, ensure you have met the following requirements:
+    * You have installed the latest version of **(Placeholder: Inferred Language, e.g., Node.js v20.x)**
+    * You have a **(Placeholder: Windows/macOS/Linux)** machine.
+
+    ## 🚀 Getting Started
+
+    ### Quick Start
+    For a quick setup, run the automated script.
+    
+    **Linux/macOS:**
+    \`\`\`bash
+    # Grant execution rights and run the setup script
+    chmod +x ./scripts/setup.sh
+    ./scripts/setup.sh
+    \`\`\`
+
+    **Windows:**
+    \`\`\`powershell
+    # Run the setup script
+    .\\scripts\\setup.bat
+    \`\`\`
+
+    ### Manual Setup
+    Follow these steps to get your development environment set up manually.
+
+    **1. Backend Setup**
+    \`\`\`bash
+    # Navigate to the backend directory
+    cd backend
+
+    # Install dependencies
+    npm install
+
+    # Create a .env file from the example
+    cp .env.example .env
+
+    # Start the development server
+    npm run dev
+    \`\`\`
+
+    **2. Frontend Setup**
+    \`\`\`bash
+    # Navigate to the frontend directory
+    cd frontend
+
+    # Install dependencies
+    npm install
+
+    # Start the development server
+    npm run dev
+    \`\`\`
+
+    ## ⚙️ How It Works
+    (Placeholder: Provide a brief explanation of the application's architecture and data flow.)
+
+    ### Architecture (High Level)
+    (Placeholder: Use this space for a high-level ASCII diagram of the system architecture.)
+    \`\`\`ascii
+         [ Client (Browser) ]
+                 |
+                 | HTTPS / WebSocket
+                 V
+        [ Load Balancer ]
+                 |
+                 V
+        [ Web Server / API Gateway ]
+          |                  |
+          V                  V
+    [ Auth Service ]   [ Product Service ]
+          |                  |
+          V                  V
+    [ User Database ] [ Product Database ]
+    \`\`\`
+
+    ### Low Level Design (LLD)
+    (Placeholder: Use this space for a more detailed ASCII diagram showing interactions between components for a specific feature, like user authentication.)
+    \`\`\`ascii
+    [ POST /api/auth/login ]
+               |
+               V
+    [ auth.controller.ts ]  (Validates request body)
+               |
+               V
+    [ auth.service.ts ]     (Applies business logic, hashes password)
+               |
+               V
+    [ user.repository.ts ]  (Finds user in database)
+               |
+               V
+        [ PostgreSQL DB ]
+    \`\`\`
+
+    ### Component Details
+    * **/src/api**: Contains all the API route handlers and controllers.
+    * **/src/components**: Contains shared UI components.
+    * **/scripts**: Includes automation scripts for setup, deployment, etc.
+
+    ## 🛡️ Security Considerations
+    This project implements the following security measures:
+    * **Environment Variables**: All sensitive keys and credentials are stored in `.env` files and are not committed to source control.
+    * **Input Validation**: All user input is validated on the server-side to prevent common vulnerabilities.
+    * **(Placeholder: Add other security measures like CORS policy, rate limiting, etc.)**
+
+    ## ☁️ Deployment
+    (Placeholder: Add instructions on how to build and deploy this application to a production environment. Include steps for services like Vercel, AWS, or Docker.)
+
+    ## 📜 License
+    This project is licensed under the **MIT License**. See the `LICENSE` file for more details.
+
+---
+
+### Phase 3: Finalization
+
+1.  **Inform the User:** Announce that the draft `README.md` has been created.
+2.  **Advise Next Steps:** Remind the user that this is a detailed draft and requires review and completion, especially the placeholder sections.
+"""
