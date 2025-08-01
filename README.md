@@ -12,7 +12,7 @@ This document provides a detailed overview of the available custom commands for 
 
 **How to use:**
 ```bash
-@changelog <from_tag> <to_tag>
+/changelog <from_tag> <to_tag>
 ```
 -   `<from_tag>`: The older git tag to start the comparison from.
 -   `<to_tag>`: The newer git tag to end the comparison at.
@@ -21,7 +21,7 @@ If no tags are provided, the command will automatically use the two most recent 
 
 **Example:**
 ```bash
-@changelog v1.0.0 v1.1.0
+/changelog v1.0.0 v1.1.0
 ```
 
 ---
@@ -32,13 +32,13 @@ If no tags are provided, the command will automatically use the two most recent 
 
 **How to use:**
 ```bash
-@create_readme
+/create_readme
 ```
 This command takes no arguments. It analyzes the project directory it is run in.
 
 **Example:**
 ```bash
-@create_readme
+/create_readme
 ```
 
 ---
@@ -49,13 +49,13 @@ This command takes no arguments. It analyzes the project directory it is run in.
 
 **How to use:**
 ```bash
-@extract_design <image_path>
+/extract_design <image_path>
 ```
 -   `<image_path>`: The path to the image file to analyze.
 
 **Example:**
 ```bash
-@extract_design ./design_mockup.png
+/extract_design ./design_mockup.png
 ```
 
 ---
@@ -66,13 +66,13 @@ This command takes no arguments. It analyzes the project directory it is run in.
 
 **How to use:**
 ```bash
-@iterate_design <task_description>
+/iterate_design <task_description>
 ```
 -   `<task_description>`: A description of the UI to build.
 
 **Example:**
 ```bash
-@iterate_design "Create a login form with a username and password field, and a submit button."
+/iterate_design "Create a login form with a username and password field, and a submit button."
 ```
 
 ---
@@ -83,13 +83,13 @@ This command takes no arguments. It analyzes the project directory it is run in.
 
 **How to use:**
 ```bash
-@outdated_package
+/outdated_package
 ```
 This command takes no arguments. It checks the dependencies of the project it is run in.
 
 **Example:**
 ```bash
-@outdated_package
+/outdated_package
 ```
 
 ---
@@ -100,13 +100,13 @@ This command takes no arguments. It checks the dependencies of the project it is
 
 **How to use:**
 ```bash
-@parallel_tasks <task_description>
+/parallel_tasks <task_description>
 ```
 -   `<task_description>`: A description of the development task to be worked on in parallel.
 
 **Example:**
 ```bash
-@parallel_tasks "Implement user authentication using JWT"
+/parallel_tasks "Implement user authentication using JWT"
 ```
 
 ---
@@ -117,14 +117,14 @@ This command takes no arguments. It checks the dependencies of the project it is
 
 **How to use:**
 ```bash
-@scaffold <type> <name>
+/scaffold <type> <name>
 ```
 -   `<type>`: The type of component to scaffold. Supported types: `react-component`, `springboot-service`, `flutter-bloc`.
 -   `<name>`: The name of the component/service.
 
 **Example:**
 ```bash
-@scaffold react-component UserProfile
+/scaffold react-component UserProfile
 ```
 
 ---
@@ -163,13 +163,13 @@ This command is interactive and will guide you through the process.
 
 **How to use:**
 ```bash
-@clip <URL>
+/clip <URL>
 ```
 -   `<URL>`: The full URL of the article you want to clip.
 
 **Example:**
 ```bash
-@clip https://www.freecodecamp.org/news/the-ultimate-guide-to-becoming-a-great-backend-engineer/
+/clip https://www.freecodecamp.org/news/the-ultimate-guide-to-becoming-a-great-backend-engineer/
 ```
 
 ---
@@ -180,13 +180,13 @@ This command is interactive and will guide you through the process.
 
 **How to use:**
 ```bash
-@eod
+/eod
 ```
 This command takes no arguments. It uses your git configuration and looks for a `todo.md` file in your `~/Documents` directory.
 
 **Example:**
 ```bash
-@eod
+/eod
 ```
 
 ---
@@ -197,17 +197,17 @@ This command takes no arguments. It uses your git configuration and looks for a 
 
 **How to use:**
 ```bash
-@prep <URL_or_file_path>
+/prep <URL_or_file_path>
 ```
 -   `<URL_or_file_path>`: The URL or local file path of the document to analyze.
 
 **Example:**
 ```bash
-@prep https://docs.google.com/document/d/12345...
+/prep https://docs.google.com/document/d/12345...
 ```
 or
 ```bash
-@prep ./meeting_agenda.md
+/prep ./meeting_agenda.md
 ```
 
 ---
@@ -220,13 +220,13 @@ or
 
 **How to use:**
 ```bash
-@outline <file_path>
+/outline <file_path>
 ```
 -   `<file_path>`: The path to the Markdown file to analyze.
 
 **Example:**
 ```bash
-@outline ./docs/guide.md
+/outline ./docs/guide.md
 ```
 
 ---
@@ -237,11 +237,11 @@ or
 
 **How to use:**
 ```bash
-@scratchpad <note>
+/scratchpad <note>
 ```
 -   `<note>`: The text you want to save to your scratchpad.
 
 **Example:**
 ```bash
-@scratchpad Remember to buy milk on the way home.
+/scratchpad Remember to buy milk on the way home.
 ```
